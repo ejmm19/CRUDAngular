@@ -1,0 +1,58 @@
+<div class="row mt-5 animated fadeIn" id="clientes">
+  <div class="col-9 py-3">
+    <app-publicidad></app-publicidad>
+    <h4 class="text-center" *ngIf="addClient != true && edClient != true">Clientes</h4>
+  </div>
+  <div class="col-3 py-1">
+    <button class="btn btn-outline-danger m-1 w-50" *ngIf="addClient === false && edClient === false" [routerLink]="['home']" >Atrás</button>
+    <button class="btn btn-primary m-1 float-lg-right" *ngIf="addClient === false && edClient === false" (click)="newClient()">Nuevo</button>
+    <button class="btn btn-danger m-1 float-lg-right" *ngIf="addClient === true || edClient === true" (click)="cancelCreate()">Cancelar</button>
+  </div>
+  <table class="table animated fadeIn" *ngIf="addClient === false && edClient === false && clientes != null">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Dirección</th>
+      <th scope="col">Telefono</th>
+      <th scope="col" class="text-center">Editar</th>
+      <th scope="col" class="text-center">Eliminar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of clientes | async; let i = index">
+      <th scope="row">{{ i+1 }}</th>
+      <td>{{item.data.nombre}}</td>
+      <td>{{item.data.direccion}}</td>
+      <td>{{item.data.telefono}}</td>
+      <td class="text-center action-edit">
+        <a (click)="editClient(item.id,item.data)" class="text-primary p-1"><i class="fas fa-edit"></i></a>
+      </td>
+      <td class="text-center action-delete">
+        <a (click)="deleteClient(item.id)"  class="text-danger p-1"><i class="fas fa-times"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <form *ngIf="addClient === true || edClient === true" #forma="ngForm" class="col-6 offset-3 animated fadeIn">
+    <legend class="text-center" *ngIf="addClient === true">Ingresar Nuevo Cliente</legend>
+    <legend class="text-center" *ngIf="edClient === true">Editar Cliente</legend>
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input type="text" name="nombre" [(ngModel)]="cliente.nombre" class="form-control" id="nombre"
+             placeholder="Ingrese el nombre" required>
+    </div>
+    <div class="form-group">
+      <label for="direccion">Dirección</label>
+      <input type="text" name="direccion" [(ngModel)]="cliente.direccion" class="form-control" id="direccion"
+             placeholder="Ingrese la dirección" required>
+    </div>
+    <div class="form-group">
+      <label for="telefono">Telefono</label>
+      <input type="text" name="telefono" [(ngModel)]="cliente.telefono" class="form-control" id="telefono"
+             placeholder="Ingrese el telefono" min="7" max="10" minlength="7" maxlength="10" required>
+    </div>
+    <button class="btn btn-primary m-1" [disabled]="!forma.valid" *ngIf="addClient === true" (click)="saveClient()">Guardar</button>
+    <button class="btn btn-primary m-1" [disabled]="!forma.valid" *ngIf="edClient === true" (click)="saveChanges(idClientEdit, cliente)">Guardar</button>
+  </form>
+</div>

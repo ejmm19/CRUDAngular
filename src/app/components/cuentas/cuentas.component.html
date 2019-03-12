@@ -1,0 +1,60 @@
+<div class="row mt-5 animated fadeIn" id="clientes">
+  <div class="col-9 py-3">
+    <app-publicidad></app-publicidad>
+    <h4 class="text-center" *ngIf="nuevaCuenta != true && editarCuenta != true">Cuentas</h4>
+  </div>
+  <div class="col-3 py-1">
+    <button class="btn btn-outline-danger m-1 w-50" *ngIf="nuevaCuenta != true && editarCuenta != true" [routerLink]="['home']" >Atrás</button>
+    <button class="btn btn-primary m-1 float-lg-right" *ngIf="nuevaCuenta != true && editarCuenta != true" (click)="nuevaCuenta = true" >Nueva</button>
+    <button class="btn btn-danger m-1 float-lg-right" *ngIf="nuevaCuenta != false || editarCuenta != false" (click)="refreshCuenta(); nuevaCuenta = false; editarCuenta = false">Cancelar</button>
+  </div>
+  <table class="table" *ngIf="nuevaCuenta != true && editarCuenta != true">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <!--<th scope="col" class="text-center">Cliente</th>-->
+      <th scope="col" class="text-center">Número</th>
+      <th scope="col" class="text-center">Saldo</th>
+      <th scope="col" class="text-center">Editar</th>
+      <th scope="col" class="text-center">Eliminar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of cuentas | async; let i = index">
+      <th scope="row">{{i+1}}</th>
+      <!--<td class="text-center"> {{item.data.cliente}}</td>-->
+      <td class="text-center">{{item.data.numcuenta}}</td>
+      <td class="text-center">{{item.data.valorcuenta}}</td>
+      <td class="text-center action-edit">
+        <a class="text-primary p-1" (click)="editCuenta(item.id,item.data)"><i class="fas fa-edit"></i></a>
+      </td>
+      <td class="text-center action-delete">
+        <a class="text-danger p-1" (click)="deleteCuenta(item.id)"><i class="fas fa-times"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <form *ngIf="nuevaCuenta != false || editarCuenta != false" #forma="ngForm" class="col-6 offset-3 animated fadeIn">
+    <legend class="text-center" *ngIf="nuevaCuenta != false" >Ingresar Nueva Cuenta</legend>
+    <legend class="text-center" *ngIf="editarCuenta != false">Editar Cuenta</legend>
+    <div class="form-group">
+      <label for="cliente">Cliente</label>
+      <select class="form-control" name="cliente" [(ngModel)]="Cuenta.cliente" id="cliente" required>
+        <option selected="selected" disabled>Seleccione un cliente</option>
+        <option *ngFor="let item of clientes | async" value="{{item.id}}">{{item.data.nombre}}</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="numcuenta">Número de cuenta</label>
+      <input type="text" name="numcuenta" [(ngModel)]="Cuenta.numcuenta" class="form-control" id="numcuenta"
+             placeholder="Ingrese el número de cuenta" minlength="10" maxlength="10" required>
+    </div>
+    <div class="form-group">
+      <label for="valorcuenta">Valor de la cuenta</label>
+      <input type="text" name="valorcuenta" [(ngModel)]="Cuenta.valorcuenta" class="form-control" id="valorcuenta"
+             placeholder="Ingrese el valor de la cuenta" required>
+    </div>
+    <button class="btn btn-primary m-1" *ngIf="editarCuenta != true" (click)="saveCuenta()" [disabled]="!forma.valid" >Guardar</button>
+    <button class="btn btn-primary m-1"  *ngIf="nuevaCuenta != true" (click)="saveEditCuenta()">Guardar</button>
+  </form>
+</div>

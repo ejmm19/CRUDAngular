@@ -1,0 +1,62 @@
+<div class="row mt-5 animated fadeIn" id="movimientos">
+  <div class="col-9 py-3">
+    <app-publicidad></app-publicidad>
+    <h4 class="text-center" *ngIf="nuevoMov != true">Movimientos</h4>
+  </div>
+  <div class="col-3 py-1">
+    <button class="btn btn-outline-danger m-1 w-50" [routerLink]="['home']" *ngIf="nuevoMov != true">Atrás</button>
+    <button class="btn btn-primary m-1 float-lg-right" *ngIf="nuevoMov != true" (click)="nuevoMov = true">Nuevo</button>
+    <button class="btn btn-danger m-1 float-lg-right"  *ngIf="nuevoMov != false" (click)="nuevoMov = false">Cancelar</button>
+  </div>
+  <table class="table" *ngIf="nuevoMov != true">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Id</th>
+      <!--<th scope="col">Cliente</th>-->
+      <th scope="col">Tipo</th>
+      <th scope="col">Valor</th>
+      <th scope="col">Fecha</th>
+      <th scope="col" class="text-center">Editar</th>
+      <th scope="col" class="text-center">Eliminar</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of movimientos | async; let i = index">
+      <th scope="row">{{i+1}}</th>
+      <!--<td>{{item.data.id_cuenta}}</td>-->
+      <td>{{item.data.tipo}}</td>
+      <td>{{item.data.valor}}</td>
+      <td>{{item.data.fecha}}</td>
+      <td class="text-center">
+        <a class="text-primary p-1"><i class="fas fa-edit"></i></a>
+      </td>
+      <td class="text-center">
+        <a class="text-danger p-1"><i class="fas fa-times"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <form *ngIf="nuevoMov === true" #forma="ngForm" class="col-6 offset-3 animated fadeIn">
+    <legend class="text-center" *ngIf="nuevoMov === true">Ingresar Nuevo Cliente</legend>
+    <legend class="text-center" *ngIf="nuevoMov != true">Editar Cliente</legend>
+    <div class="form-group">
+      <label for="tipo">Tipo</label>
+      <select class="form-control" name="cliente" id="tipo" required>
+        <option >Débito</option>
+        <option >Crédito</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="valor">Valor</label>
+      <input type="text" name="valor" class="form-control" id="valor"
+             placeholder="Ingrese el valor" required>
+    </div>
+    <div class="form-group">
+      <label for="fecha">Fecha</label>
+      <input type="date" name="fecha" class="form-control" id="fecha" required>
+    </div>
+    <button class="btn btn-primary m-1" [disabled]="!forma.valid" *ngIf="addClient === true" (click)="saveClient()">Guardar</button>
+    <button class="btn btn-primary m-1" [disabled]="!forma.valid" *ngIf="edClient === true" (click)="saveChanges(idClientEdit, cliente)">Guardar</button>
+  </form>
+</div>

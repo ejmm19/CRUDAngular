@@ -1,0 +1,20 @@
+#header-bank {
+  border-bottom: solid 1px #f3f3f3;
+}
+#header-bank i.fab {
+  font-size: 35px;
+}
+#header-bank a {
+  color: #524e4e;
+}
+#home a {
+  color: #524e4e;
+}
+#clientes td.action-delete a,
+#clientes td.action-edit a {
+  cursor: pointer;
+}
+app-publicidad p {
+  font-size: 12px;
+}
+/*# sourceMappingURL=styles.css.map */
